@@ -1,25 +1,8 @@
-import pino from "pino";
+const logger = {
+  info: (...args: unknown[]) => console.log(...args),
+  warn: (...args: unknown[]) => console.warn(...args),
+  error: (...args: unknown[]) => console.error(...args),
+  debug: (...args: unknown[]) => console.debug(...args),
+};
 
-import {env} from "@/env";
-
-const isEdge = env.NEXT_RUNTIME === "edge";
-const isProduction = env.NODE_ENV === "production";
-
-export const logger = pino({
-  level: env.LOG_LEVEL || "info",
-  transport:
-    !isEdge && !isProduction
-      ? {
-          target: "pino-pretty",
-          options: {
-            colorize: true,
-            ignore: "pid,hostname",
-            translateTime: "SYS:standard",
-          },
-        }
-      : undefined,
-  formatters: {
-    level: label => ({level: label.toUpperCase()}),
-  },
-  timestamp: pino.stdTimeFunctions.isoTime,
-});
+export default logger;

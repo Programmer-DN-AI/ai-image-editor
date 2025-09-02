@@ -8,8 +8,9 @@ import * as schema from "./schema";
 
 neonConfig.webSocketConstructor = ws;
 
-const pool = new Pool({connectionString: env.DATABASE_URL});
+const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
 const db = drizzle(pool, {schema});
 
 export {db};
 export type DB = typeof db;
+
