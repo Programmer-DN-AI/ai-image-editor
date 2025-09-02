@@ -3,14 +3,14 @@
 import Link from "next/link";
 import {useEffect, useRef, useState} from "react";
 
-import {Image, Video} from "@imagekit/next";
+import { Image as IKImage, Video as IKVideo } from "@imagekit/next";
 import {Image as ImageIcon, Volume2, VolumeX} from "lucide-react";
 
 import {Card} from "@/components/ui/card";
 import ROUTES from "@/constants/routes";
 import {SelectMediaModel} from "@/db/schema/media";
+import {Button} from "@/components/ui/button";
 
-import {Button} from "../ui/button";
 
 type MediaCardProps = SelectMediaModel & {
   activeVideoId?: string | null;
@@ -48,7 +48,7 @@ const MediaCard = ({
       <Card className="group relative mb-4 cursor-pointer break-inside-avoid overflow-hidden rounded-md border-0 !p-0 shadow-md backdrop-blur-sm transition-all duration-300 dark:bg-black/50">
         <div className="relative">
           {media.mediaType === "IMAGE" ? (
-            <Image
+            <IKImage
               urlEndpoint={media.originalUrl}
               src={media.transformedUrl || media.originalUrl}
               alt={media.fileName}
@@ -65,7 +65,7 @@ const MediaCard = ({
             />
           ) : (
             <div className="relative">
-              <Video
+              <IKVideo
                 ref={videoRef}
                 urlEndpoint={media.originalUrl}
                 src={media.transformedUrl || media.originalUrl}

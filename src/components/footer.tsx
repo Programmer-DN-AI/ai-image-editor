@@ -8,8 +8,8 @@ const Footer = () => {
         <span className="font-puppies-play ml-2.5 scale-160">Moments.</span>
       </p>
 
-      <Link href="https://chaicode.com" target="_blank" rel="noreferrer">
-        project by <span className="font-medium">chaicode</span>
+      <Link href="https://github.com/Programmer-DN-AI" target="_blank" rel="noreferrer">
+        project by <span className="font-medium">Dulmina Nirwan</span>
       </Link>
     </div>
   );

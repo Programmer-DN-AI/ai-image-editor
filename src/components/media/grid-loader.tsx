@@ -1,11 +1,16 @@
-const GridLoader = () => (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {Array.from({length: 8}).map((_, i) => (
-        <div key={i} className="space-y-4">
-          <div className="h-48 animate-pulse rounded-lg bg-pink-50 dark:bg-black/40" />
+import { Spinner } from "@/components/spinner";
+
+export default function GridLoader() {
+  return (
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      {Array.from({ length: 10 }).map((_, idx) => (
+        <div
+          key={idx}
+          className="aspect-[4/5] rounded-md border bg-muted/30 flex items-center justify-center"
+        >
+          <Spinner className="text-muted-foreground" />
         </div>
       ))}
     </div>
   );
-  
-  export default GridLoader;
+}

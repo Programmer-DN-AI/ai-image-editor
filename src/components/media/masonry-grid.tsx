@@ -1,9 +1,7 @@
 "use client";
 
 import {useMemo, useState} from "react";
-
 import {SelectMediaModel} from "@/db/schema/media";
-
 import Logo from "../logo";
 import MediaCard from "./media-card";
 

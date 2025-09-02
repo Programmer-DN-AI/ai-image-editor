@@ -1,4 +1,5 @@
 import {useCallback, useState} from "react";
+import {toast} from "sonner";
 
 import {
   ImageKitAbortError,
@@ -39,30 +40,30 @@ export const useImageKitUpload = () => {
       const response = await fetch("/api/upload-auth");
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(
-          `Request failed with status ${response.status}: ${errorText}`
-        );
+        const message = `Request failed with status ${response.status}: ${errorText}`;
+        toast.error("Upload auth failed", { description: message });
+        throw new Error(message);
       }
 
       const data = await response.json();
       const {signature, expire, token, publicKey} = data;
       return {signature, expire, token, publicKey};
     } catch (error) {
-      console.error("Authentication error:", error);
-      throw new Error("Authentication request failed");
+      const message = error instanceof Error ? error.message : "Authentication request failed";
+      toast.error("Authentication error", { description: message });
+      throw new Error(message);
     }
   }, []);
 
   const handleUploadError = useCallback((error: unknown): string => {
-    if (error instanceof ImageKitAbortError) return "Upload cancelled";
-    if (error instanceof ImageKitInvalidRequestError)
-      return `Invalid request: ${error.message}`;
-    if (error instanceof ImageKitUploadNetworkError)
-      return `Network error: ${error.message}`;
-    if (error instanceof ImageKitServerError)
-      return `Server error: ${error.message}`;
-    if (error instanceof Error) return error.message;
-    return "Upload failed";
+    let message = "Upload failed";
+    if (error instanceof ImageKitAbortError) message = "Upload cancelled";
+    else if (error instanceof ImageKitInvalidRequestError) message = `Invalid request: ${error.message}`;
+    else if (error instanceof ImageKitUploadNetworkError) message = `Network error: ${error.message}`;
+    else if (error instanceof ImageKitServerError) message = `Server error: ${error.message}`;
+    else if (error instanceof Error) message = error.message;
+    toast.error("Upload error", { description: message });
+    return message;
   }, []);
 
   const addFiles = useCallback((newFiles: File[]) => {
@@ -193,6 +194,8 @@ export const useImageKitUpload = () => {
         );
 
         await saveToDatabase(fileData, uploadResponse);
+
+        toast.success("Upload complete", { description: fileData.file.name });
 
         return uploadResponse;
       } catch (error) {
